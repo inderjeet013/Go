@@ -95,21 +95,24 @@ public class PlateauJeu {
         
        for (int i=0; (i<=this.pierres.size()); i++) {
             
-            if (comparePoint(this.pierres.get(i).getPosition(),p)){
+            if (p.comparePoint(this.pierres.get(i).getPosition())){
                 test = false;
             }
         }
        return test;
     }
     
+    public boolean estDansLePlateau (Point2D p) {
+        return (p.getX()>=0)&&(p.getX()<=this.cote)&&(p.getY()>=0)&&(p.getY()<=this.cote);
+    }
     
     public LinkedList<Point2D> caseLibreAutourDe(Point2D p) {
         LinkedList<Point2D> list = new LinkedList();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if((i!=0)&&(j!=0)){
+                if((i!=0)&&(j!=0)&&(i!=j)){
                 Point2D p1 = new Point2D(p.getX()+i,p.getY()+j);
-                if (this.caseLibre(p1)) {
+                if ((this.caseLibre(p1))&&(this.estDansLePlateau(p1))) {
                     list.add(p1);
                 }
           
@@ -127,5 +130,25 @@ public class PlateauJeu {
         }
     }
     
+       public void jouer(Joueur j){
+        Scanner console = new Scanner(System.in);
+        System.out.println("Voulez-vous placer une pierre ?");
+        String reponse = console.nextLine();
+        System.out.println(reponse);
+        
+        if (reponse=="oui") {
+            Scanner console2 = new Scanner(System.in);
+            System.out.println("Quelle est l'abscisse de la pierre ?");
+            int abs = console.nextInt();
+            System.out.println("Quelle est l'ordonnée de la pierre ?");
+            int ord = console.nextInt();
+            
+            Point2D p = new Point2D(abs,ord);
+            
+            while()
+            
+        }
+            j.placerPierre(null);
+        }
     
 }
