@@ -1,77 +1,110 @@
 package go;
+
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Scanner;
+
+//Setters
 /**
  *
  * @author slevy
  */
 public class PlateauJeu {
-    
-    private int komi ;
+
+    private int komi;
     private int cote;
     private boolean handicap;
-    private int pierresNoiresCapturees ;
-    private int pierresBlanchesCapturees ;
-    
-    
-    public PlateauJeu (int k, int c, boolean h, int pNc, int pBc){
-        this.komi=k;
-        this.cote=c;
-        this.handicap=h;
-        this.pierresNoiresCapturees=pNc;
-        this.pierresBlanchesCapturees=pBc;
+    private int pierresNoiresCapturees;
+    private int pierresBlanchesCapturees;
+    private LinkedList<Point2D> pierresNoires;
+     private LinkedList<Point2D> pierresBlanches;
+
+    public PlateauJeu(int k, int c, boolean h, int pNc, int pBc) {
+        this.komi = k;
+        this.cote = c;
+        this.handicap = h;
+        this.pierresNoiresCapturees = pNc;
+        this.pierresBlanchesCapturees = pBc;
     }
-    
-    
-    //getters
-    
-    public int getKomi(){
-        return komi;
+
+    public LinkedList<Point2D> getPierresNoires() {
+        return pierresNoires;
     }
-    
-    public int getCote(){
-        return cote;
+
+    public LinkedList<Point2D> getPierresBlanches() {
+        return pierresBlanches;
     }
-    
-    public boolean getHandicap(){
+
+    public boolean isHandicap() {
         return handicap;
     }
-    
-    public int getPierresNoiresCapturees(){
+
+    public void setPierresNoires(LinkedList<Point2D> pierresNoires) {
+        this.pierresNoires = pierresNoires;
+    }
+
+    public void setPierresBlanches(LinkedList<Point2D> pierresBlanches) {
+        this.pierresBlanches = pierresBlanches;
+    }
+
+    //getters
+    public int getKomi() {
+        return komi;
+    }
+
+    public int getCote() {
+        return cote;
+    }
+
+    public int getPierresNoiresCapturees() {
         return pierresNoiresCapturees;
     }
-    
-    public int getPierresBlanchesCapturees(){
+
+    public int getPierresBlanchesCapturees() {
         return pierresBlanchesCapturees;
     }
+
+    public void setKomi(int komi) {
+        this.komi = komi;
+    }
+
+    public void setCote(int cote) {
+        this.cote = cote;
+    }
+
+    public void setHandicap(boolean handicap) {
+        this.handicap = handicap;
+    }
+
+    public void setPierresNoiresCapturees(int pierresNoiresCapturees) {
+        this.pierresNoiresCapturees = pierresNoiresCapturees;
+    }
+
+    public void setPierresBlanchesCapturees(int pierresBlanchesCapturees) {
+        this.pierresBlanchesCapturees = pierresBlanchesCapturees;
+    }
+
+    //Méthodes
     
-    
-    //Setters
-    
-    public void setKomi(int k){
-        komi=k;
+    public boolean caseLibre (Point2D p) {
+        for (int i=0; i=; i++)
     }
     
-    public void setCote(int c){
-        cote=c;
-    }
     
-    public void setHandicap(boolean h){
-        handicap=h;
+    public LinkedList<Point2D> caseLibreAutourDe(Point2D p) {
+        LinkedList<Point2D> list = new LinkedList<>;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if((i<>0)&&(j<>0)){
+                Point2D p1 = new Point2D(p.getX()+i,p.getY()+j);
+                if (this.caseLibre(p1)) {
+                    list.add(p1);
+                }
+          
+            }
+        }
+
     }
-    
-     public void setPierresNoiresCapturees(int pNc){
-       pierresNoiresCapturees=pNc;
-    }
-     
-     public void setPierresBlanchesCapturees(int pBc){
-       pierresBlanchesCapturees=pBc;
-    }
-    
-     
-     //Méthodes
-     
-     public void initPlateau(){
-         
-         
-     }
+        return list;
+}
 }
