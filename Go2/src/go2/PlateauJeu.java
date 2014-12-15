@@ -9,7 +9,6 @@ package go2;
  * @author jtaillan
  */
 
-
 import java.util.LinkedList;
 
 /**

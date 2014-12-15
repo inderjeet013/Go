@@ -4,6 +4,8 @@
  */
 package go2;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author jtaillan
@@ -59,7 +61,9 @@ public class Joueur {
     }
     
     public void placerPierre(Point2D point) {
+        LinkedList<Point2D> cases = new  LinkedList<>(); 
         
+     
     }
     
     public void passerTour() {
