@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @author slevy
  */
 
-OUI
+
 public class PlateauJeu {
 
     private int komi;
