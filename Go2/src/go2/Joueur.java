@@ -12,9 +12,9 @@ public class Joueur {
     private boolean handicap;
     private int komi;
     private int pierresCapturees;
-    private Plateau plateau;
+    private PlateauJeu plateau;
 
-    public Joueur(boolean handicap, int komi, Plateau plateau) {
+    public Joueur(boolean handicap, int komi, PlateauJeu plateau) {
         this.handicap = handicap;
         this.komi = komi;
         this.plateau = plateau;
@@ -33,7 +33,7 @@ public class Joueur {
         return pierresCapturees;
     }
 
-    public Plateau getPlateau() {
+    public PlateauJeu getPlateau() {
         return plateau;
     }
 
@@ -49,7 +49,7 @@ public class Joueur {
         this.pierresCapturees = pierresCapturees;
     }
 
-    public void setPlateau(Plateau plateau) {
+    public void setPlateau(PlateauJeu plateau) {
         this.plateau = plateau;
     }
     
