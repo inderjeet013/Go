@@ -34,11 +34,17 @@ public class Point2D {
     public void setY(int y) {
         this.y = y;
     }
-    
+    /**
+     * affiche la position de la pierre
+     */
     public void affichePosition() {
         System.out.println("Pierre en position (" + this.getX() + ", " + this.getY() + ")");
 }
-    
+    /**
+     * compare la position de la pierre à une position 'p'
+     * @param p
+     * @return 
+     */
     public boolean comparePoint(Point2D p) {
         if ((this.getX() == p.getX() ) && (this.getY() == p.getY())) {
             return true;

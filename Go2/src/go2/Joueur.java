@@ -60,7 +60,10 @@ public class Joueur {
     public void jouer(Point2D point){
         
     }
-    
+    /**
+     * place une pierre dans une position 'point'
+     * @param point 
+     */
     public void placerPierre(Point2D point) {
         LinkedList<Point2D> cases = new  LinkedList<> (plateau.caseLibreAutourDe(point)); 
         

@@ -85,11 +85,18 @@ public class PlateauJeu {
     }
 
     //Méthodes
-
+/** ajout d'une pierre dans une liste
+ * 
+ * @param p 
+ */
     public void ajouterPierre(Pierre p) {
         this.pierres.add(p);
     }
-    
+    /**Verification si une position est innocupée
+     * 
+     * @param p
+     * @return 
+     */
     public boolean caseLibre (Point2D p) {
         boolean test = true ;
         
@@ -101,11 +108,19 @@ public class PlateauJeu {
         }
        return test;
     }
-    
+    /**
+     * vérifie si une position est à l'intérieur du plateau
+     * @param p
+     * @return 
+     */
     public boolean estDansLePlateau (Point2D p) {
         return (p.getX()>=0)&&(p.getX()<=this.cote)&&(p.getY()>=0)&&(p.getY()<=this.cote);
     }
-    
+    /**
+     * Vérifie les cases libres autour d'une position
+     * @param p
+     * @return 
+     */
     public LinkedList<Point2D> caseLibreAutourDe(Point2D p) {
         LinkedList<Point2D> list = new LinkedList();
         for (int i = -1; i <= 1; i++) {
@@ -122,14 +137,19 @@ public class PlateauJeu {
     }
         return list;
 }
-    
+    /** 
+     * Termine la partie
+     */
     public void finPartie() {
         if (this.nombreToursPasses ==2) {
             System.out.println("Partie terminée !");
             this.compterScores();
         }
     }
-    
+    /**
+     * Définit le tour de jeu
+     * @param j 
+     */
        public void jouer(Joueur j){
         Scanner console = new Scanner(System.in);
         System.out.println("Voulez-vous placer une pierre ?");
