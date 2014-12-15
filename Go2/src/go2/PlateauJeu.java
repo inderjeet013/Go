@@ -16,8 +16,8 @@ public class PlateauJeu {
     private boolean handicap;
     private int pierresNoiresCapturees;
     private int pierresBlanchesCapturees;
-    private LinkedList<Point2D> pierresNoires;
-     private LinkedList<Point2D> pierresBlanches;
+    private LinkedList<Pierre> pierresNoires;
+     private LinkedList<Pierre> pierresBlanches;
 
     public PlateauJeu(int k, int c, boolean h, int pNc, int pBc) {
         this.komi = k;
@@ -27,11 +27,11 @@ public class PlateauJeu {
         this.pierresBlanchesCapturees = pBc;
     }
 
-    public LinkedList<Point2D> getPierresNoires() {
+    public LinkedList<Pierre> getPierresNoires() {
         return pierresNoires;
     }
 
-    public LinkedList<Point2D> getPierresBlanches() {
+    public LinkedList<Pierre> getPierresBlanches() {
         return pierresBlanches;
     }
 
@@ -39,11 +39,11 @@ public class PlateauJeu {
         return handicap;
     }
 
-    public void setPierresNoires(LinkedList<Point2D> pierresNoires) {
+    public void setPierresNoires(LinkedList<Pierre> pierresNoires) {
         this.pierresNoires = pierresNoires;
     }
 
-    public void setPierresBlanches(LinkedList<Point2D> pierresBlanches) {
+    public void setPierresBlanches(LinkedList<Pierre> pierresBlanches) {
         this.pierresBlanches = pierresBlanches;
     }
 
@@ -86,11 +86,24 @@ public class PlateauJeu {
 
     //Méthodes
     
+    public int maxDeuxInt (int a, int b){
+        if(a>b){
+            return a;
+        }
+        else{return b;}
+    }
+    
     public boolean caseLibre (Point2D p) {
         boolean test = true ;
-        for (int i=0; i=; i++) {
+        
+       for (int i=0; (i<=maxDeuxInt(this.pierresNoires.size(),this.pierresNoires.size())); i++) {
             
+            if ((comparePoint(this.pierresNoires.get(i).getPosition(),p))&&
+                    (comparePoint(this.pierresNoires.get(i).getPosition(),p))) {
+                test = false;
+            }
         }
+       return test;
     }
     
     
@@ -98,7 +111,7 @@ public class PlateauJeu {
         LinkedList<Point2D> list = new LinkedList();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
-                if((i<>0)&&(j<>0)){
+                if((i!=0)&&(j!=0)){
                 Point2D p1 = new Point2D(p.getX()+i,p.getY()+j);
                 if (this.caseLibre(p1)) {
                     list.add(p1);
