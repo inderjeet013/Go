@@ -43,6 +43,8 @@ public class PlateauJeu {
     public void setPierres(LinkedList<Pierre> pierres) {
         this.pierres = pierres;
     }
+    
+    
 
     //getters
     public int getKomi() {
