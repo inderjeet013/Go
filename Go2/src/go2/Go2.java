@@ -4,12 +4,12 @@
  */
 package go2;
 
+
 /**
  *
  * @author jtaillan
  */
 public class Go2 {
-
     /**
      * @param args the command line arguments
      */

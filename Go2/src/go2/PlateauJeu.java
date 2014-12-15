@@ -103,42 +103,89 @@ public class PlateauJeu {
     }
 
     //Méthodes
+
+
+/** ajout d'une pierre dans une liste
+ * 
+ * @param p 
+ */
+
     public void ajouterPierre(Pierre p) {
         this.pierres.add(p);
     }
 
-    public boolean caseLibre(Point2D p) {
-        boolean test = true;
+    /**Verification si une position est innocupée
+     * 
+     * @param p
+     * @return 
+     */
+    public boolean caseLibre (Point2D p) {
+    }
+        boolean test = true ;
+        
+       for (int i=0; (i<=this.pierres.size()); i++) {
+            
+            if (p.comparePoint(this.pierres.get(i).getPosition())){
 
-        for (int i = 0; (i <= this.pierres.size()); i++) {
-
-            if (this.pierres.get(i).getPosition().comparePoint(p)) {
                 test = false;
             }
         }
         return test;
     }
 
+
+    /**
+     * vérifie si une position est à l'intérieur du plateau
+     * @param p
+     * @return 
+     */
+    public boolean estDansLePlateau (Point2D p) {
+        return (p.getX()>=0)&&(p.getX()<=this.cote)&&(p.getY()>=0)&&(p.getY()<=this.cote);
+    }
+    /**
+     * Vérifie les cases libres autour d'une position
+     * @param p
+     * @return 
+     */
+
     public LinkedList<Point2D> caseLibreAutourDe(Point2D p) {
         LinkedList<Point2D> list = new LinkedList();
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
+
                 if ((i != 0) && (j != 0)) {
                     Point2D p1 = new Point2D(p.getX() + i, p.getY() + j);
                     if (this.caseLibre(p1)) {
                         list.add(p1);
                     }
 
+                if((i!=0)&&(j!=0)&&(i!=j)){
+                Point2D p1 = new Point2D(p.getX()+i,p.getY()+j);
+                if ((this.caseLibre(p1))&&(this.estDansLePlateau(p1))) {
+                    list.add(p1);
+                }
+          
+            }
+        }
+
+
                 }
             }
 
         }
         return list;
+
     }
 
 
     public checkSuicide() {
     }
+
+
+}
+    /** 
+     * Termine la partie
+     */
 
     public void finPartie() {
         if (this.nombreToursPasses == 2) {
@@ -146,6 +193,7 @@ public class PlateauJeu {
             this.compterScores();
         }
     }
+
 
     public void capturerPierre(Pierre pierre) {
         LinkedList<Pierre> listePierre = new LinkedList<>();
@@ -161,4 +209,31 @@ public class PlateauJeu {
                 
         }
     }
+
+    /**
+     * Définit le tour de jeu
+     * @param j 
+     */
+       public void jouer(Joueur j){
+        Scanner console = new Scanner(System.in);
+        System.out.println("Voulez-vous placer une pierre ?");
+        String reponse = console.nextLine();
+        System.out.println(reponse);
+        
+        if (reponse=="oui") {
+            Scanner console2 = new Scanner(System.in);
+            System.out.println("Quelle est l'abscisse de la pierre ?");
+            int abs = console.nextInt();
+            System.out.println("Quelle est l'ordonnée de la pierre ?");
+            int ord = console.nextInt();
+            
+            Point2D p = new Point2D(abs,ord);
+            
+            while()
+            
+        }
+            j.placerPierre(null);
+        }
+    
+
 }
