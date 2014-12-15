@@ -9,6 +9,8 @@ import java.util.Scanner;
  *
  * @author slevy
  */
+
+OUI
 public class PlateauJeu {
 
     private int komi;
@@ -16,8 +18,8 @@ public class PlateauJeu {
     private boolean handicap;
     private int pierresNoiresCapturees;
     private int pierresBlanchesCapturees;
-    private LinkedList<Pierre> pierresNoires;
-     private LinkedList<Pierre> pierresBlanches;
+    private LinkedList<Pierre> pierres;
+     
 
     public PlateauJeu(int k, int c, boolean h, int pNc, int pBc) {
         this.komi = k;
@@ -27,24 +29,19 @@ public class PlateauJeu {
         this.pierresBlanchesCapturees = pBc;
     }
 
-    public LinkedList<Pierre> getPierresNoires() {
-        return pierresNoires;
+    public LinkedList<Pierre> getPierres() {
+        return pierres;
     }
 
-    public LinkedList<Pierre> getPierresBlanches() {
-        return pierresBlanches;
-    }
 
     public boolean isHandicap() {
         return handicap;
     }
 
-    public void setPierresNoires(LinkedList<Pierre> pierresNoires) {
-        this.pierresNoires = pierresNoires;
-    }
+ 
 
-    public void setPierresBlanches(LinkedList<Pierre> pierresBlanches) {
-        this.pierresBlanches = pierresBlanches;
+    public void setPierres(LinkedList<Pierre> pierres) {
+        this.pierres = pierres;
     }
 
     //getters
@@ -85,21 +82,14 @@ public class PlateauJeu {
     }
 
     //Méthodes
-    
-    public int maxDeuxInt (int a, int b){
-        if(a>b){
-            return a;
-        }
-        else{return b;}
-    }
+
     
     public boolean caseLibre (Point2D p) {
         boolean test = true ;
         
-       for (int i=0; (i<=maxDeuxInt(this.pierresNoires.size(),this.pierresNoires.size())); i++) {
+       for (int i=0; (i<=this.pierres.size()); i++) {
             
-            if ((comparePoint(this.pierresNoires.get(i).getPosition(),p))&&
-                    (comparePoint(this.pierresNoires.get(i).getPosition(),p))) {
+            if (comparePoint(this.pierres.get(i).getPosition(),p)){
                 test = false;
             }
         }
