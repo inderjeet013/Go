@@ -18,6 +18,7 @@ public class PlateauJeu {
     private boolean handicap;
     private int pierresNoiresCapturees;
     private int pierresBlanchesCapturees;
+    private int nombreToursPasses;
     private LinkedList<Pierre> pierres;
      
 
@@ -85,6 +86,9 @@ public class PlateauJeu {
 
     //Méthodes
 
+    public void ajouterPierre(Pierre p) {
+        this.pierres.add(p);
+    }
     
     public boolean caseLibre (Point2D p) {
         boolean test = true ;
@@ -115,4 +119,13 @@ public class PlateauJeu {
     }
         return list;
 }
+    
+    public void finPartie() {
+        if (this.nombreToursPasses ==2) {
+            System.out.println("Partie terminée !");
+            this.compterScores();
+        }
+    }
+    
+    
 }

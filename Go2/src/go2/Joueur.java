@@ -11,6 +11,7 @@ import java.util.LinkedList;
  * @author jtaillan
  */
 public class Joueur {
+    private String couleur;
     private boolean handicap;
     private int komi;
     private int pierresCapturees;
@@ -61,10 +62,21 @@ public class Joueur {
     }
     
     public void placerPierre(Point2D point) {
-        LinkedList<Point2D> cases = new  LinkedList<>(); 
+        LinkedList<Point2D> cases = new  LinkedList<> (plateau.caseLibreAutourDe(point)); 
         
-     
+        for (Point2D p : cases) {
+            if (point.comparePoint(p)) {
+                Pierre pierre = new Pierre(this.couleur, point);
+                this.plateau.ajouterPierre(pierre);
+                System.out.println("Pierre placée");
+                break;
+            }
+            else {
+                System.out.println("Impossible de placer la pierre à cet endroit");
+            }
+        }
     }
+    
     
     public void passerTour() {
         

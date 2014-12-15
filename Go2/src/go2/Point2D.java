@@ -39,8 +39,8 @@ public class Point2D {
         System.out.println("Pierre en position (" + this.getX() + ", " + this.getY() + ")");
 }
     
-    public boolean comparePoint(Point2D p1, Point2D p2) {
-        if ((p1.getX() == p2.getX() ) && (p1.getY() == p2.getY())) {
+    public boolean comparePoint(Point2D p) {
+        if ((this.getX() == p.getX() ) && (this.getY() == p.getY())) {
             return true;
         }
         else {
