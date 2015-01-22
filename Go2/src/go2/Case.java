@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 package go2;
-
+import java.util.ArrayList;
 /**
  *
  * @author jtaillan
@@ -11,15 +11,34 @@ package go2;
 public class Case {
      private String couleur;
      private Point2D position;
-       
+     private int libertes;
+     //pierres adjacents de la même couleur
+     private ArrayList<Case> voisins; 
+     //pierres adjacents de la même couleur
+     private ArrayList<Case> voisinsMechants; 
 
-    public Case(Point2D position) {
-        this.couleur = "Vide";
-        this.position = position;
-        
-    }
 
     
+       
+     // Constructeur
+    
+    public Case(Point2D position) {
+        this.couleur = "vide";
+        this.position = position;  
+        this.libertes = 0;
+        this.voisins = new ArrayList<Case>();
+        this.voisinsMechants = new ArrayList<Case>();
+    }
+    
+    public Case(Case c) {
+        this.couleur = c.getCouleur();
+        this.position = c.getPosition();
+        this.libertes = c.getLibertes();
+        this.voisinsMechants = c.getVoisins();  
+       
+    }
+
+    // Getters
     
     public String getCouleur() {
         return couleur;
@@ -28,7 +47,23 @@ public class Case {
     public Point2D getPosition() {
         return position;
     }
+    
+    public int getLibertes() {
+        return libertes;
+    }
 
+     public ArrayList<Case> getVoisins() {
+        return voisins;
+    }
+     
+     public ArrayList<Case> getVoisinsMechants() {
+        return voisinsMechants;
+    }
+  
+
+     
+     // Setters
+     
     public void setCouleur(String couleur) {
         this.couleur = couleur;
     }
@@ -37,4 +72,35 @@ public class Case {
         this.position = position;
     }
     
+     public void setLibertes(int l) {
+        this.libertes = this.libertes + l;
+    }
+     
+     
+     public void setVoisins(ArrayList<Case> voisins) {
+        this.voisins = voisins;
+    }
+    
+     public void setVoisins(Case v) {
+         this.voisins.add(v);
+     }
+     
+   public void setVoisinsMechants(ArrayList<Case> voisinsMechants) {
+        this.voisinsMechants = voisinsMechants;
+    }
+    
+     public void setVoisinsMechants(Case v) {
+         this.voisinsMechants.add(v);
+     }
+     
+   
+     
+     
+     
+     
 }
+     
+   
+
+
+

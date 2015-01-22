@@ -342,7 +342,7 @@ public class PlateauJeu {
                     test = this.verifierNonCaptureVoisin(voisin.getPosition(), voisinsVerifies);
                 }
             }
-            // Si on trouve un voisin avec des libertés pas besoin de tester tous les autres on peut sortir de la boucle.
+            // Si  on trouve un voisin avec des libertés pas besoin de tester tous les autres on peut sortir de la boucle.
             if (test) {
                 break;
             }
