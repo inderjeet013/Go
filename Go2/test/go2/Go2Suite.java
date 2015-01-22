@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author Merwane
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({go2.CaseTest.class, go2.Go2Test.class, go2.PlateauJeuTest.class, go2.Point2DTest.class})
+@Suite.SuiteClasses({CaseTest.class, Go2Test.class, Point2DTest.class, PlateauJeuTest.class})
 public class Go2Suite {
 
     @BeforeClass
