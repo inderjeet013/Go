@@ -100,14 +100,14 @@ public class PlateauJeu {
     public void poserPierre(Point2D p, String c) {
         if (this.estDansLePlateau(p) && this.caseEstLibre(p)) {
             // Si la case est bien dans le plateau et libre, on pose la pierre et on met à jour la liste de ses voisins et ses libertés
-            casesAutourDe(p);
+            this.casesAutourDe(p);
             
             // On regarde si la pose de la pierre ne génère pas de suicide
             if (this.verifierNonSuicide(p) == false) {
-                retirerPierre(p);
+                this.retirerPierre(p);
             }
             // On passe ensuite à une éventuelle phase de capture
-            capturerAutourDe(p);  
+            this.capturerAutourDe(p);  
         }
     }
 
@@ -224,7 +224,7 @@ public class PlateauJeu {
             else {
                 ArrayList<Case> voisinsVerifies = new ArrayList<Case>();
                 voisinsVerifies.add(Cases[p.getX()][p.getY()]);
-                test = verifierNonSuicideVoisin(p, voisinsVerifies);
+                test = this.verifierNonSuicideVoisin(p, voisinsVerifies);
                 // Si suicide message d'erreur
                 if (test == false) {
                     System.out.println("Impossible de poser la pièce à cet endroit car il s'agit d'un suicide");
@@ -258,7 +258,7 @@ public class PlateauJeu {
                 } // Si elle n'en a pas on regarde si elle-même a des voisins ayant des libertés
                 else {
                     // Le caractère récursif de la fonction fait qu'on va tester des pierres du groupe tant qu'on ne trouvera pas de liberté 
-                    test = verifierNonSuicideVoisin(voisin.getPosition(), voisinsVerifies);
+                    test = this.verifierNonSuicideVoisin(voisin.getPosition(), voisinsVerifies);
                 }
             }
             // Si on trouve un voisin avec des libertés pas besoin de tester tous les autres on peut sortir de la boucle.
@@ -278,7 +278,7 @@ public class PlateauJeu {
     public void retirerPierre(Point2D p) {
         for (Case voisin : Cases[p.getX()][p.getY()].getVoisins()) {
             voisin.setLibertes(1);
-            enleveMechant(voisin, p);
+            this.enleveMechant(voisin, p);
         };
         Cases[p.getX()][p.getY()] = new Case(p);
     }
@@ -317,7 +317,7 @@ public class PlateauJeu {
             else {
                 ArrayList<Case> voisinsVerifies = new ArrayList<Case>();
                 voisinsVerifies.add(Cases[p.getX()][p.getY()]);
-                test = verifierNonCaptureVoisin(p, voisinsVerifies);
+                test = this.verifierNonCaptureVoisin(p, voisinsVerifies);
                 return test;
             }
 
@@ -339,7 +339,7 @@ public class PlateauJeu {
                 } // Si elle n'en a pas on regarde si elle-même a des voisins ayant des libertés
                 else {
                     // Le caractère récursif de la fonction fait qu'on va tester des pierres du groupe tant qu'on ne trouvera pas de liberté 
-                    test = verifierNonCaptureVoisin(voisin.getPosition(), voisinsVerifies);
+                    test = this.verifierNonCaptureVoisin(voisin.getPosition(), voisinsVerifies);
                 }
             }
             // Si on trouve un voisin avec des libertés pas besoin de tester tous les autres on peut sortir de la boucle.
@@ -350,7 +350,7 @@ public class PlateauJeu {
         // On retire les pierres si elles sont capturées
         if (test == false) {
             for (Case voisin2 : voisinsVerifies) {
-                retirerPierre(voisin2.getPosition());
+                this.retirerPierre(voisin2.getPosition());
             }           
         }
         return test;
