@@ -16,34 +16,21 @@ public class PlateauJeu {
 
     private int komi;
     private int cote;
-    private boolean handicap;
+    private int nombrePierresdAvance;
     private int pierresNoiresCapturees;
     private int pierresBlanchesCapturees;
     private int nombreToursPasses;
-    private LinkedList<Pierre> pierres;
-    private Case[][] Cases =new Case[cote-1][cote-1];
-    
-    public PlateauJeu(int k, int c, boolean h, int pNc, int pBc) {
+    private Case[][] Cases = new Case[cote - 1][cote - 1];
+
+    public PlateauJeu(int k, int c, int n, int pNc, int pBc) {
         this.komi = k;
         this.cote = c;
-        this.handicap = h;
+        this.nombrePierresdAvance = n;
         this.pierresNoiresCapturees = pNc;
         this.pierresBlanchesCapturees = pBc;
         this.nombreToursPasses = 0;
-        this.Cases =new Case[cote-1][cote-1];
-        
-    }
+        this.Cases = new Case[cote - 1][cote - 1];
 
-    public LinkedList<Pierre> getPierres() {
-        return pierres;
-    }
-
-    public boolean isHandicap() {
-        return handicap;
-    }
-
-    public void setPierres(LinkedList<Pierre> pierres) {
-        this.pierres = pierres;
     }
 
     //getters
@@ -54,8 +41,7 @@ public class PlateauJeu {
     public Case[][] getCases() {
         return Cases;
     }
-    
-    
+
     public int getKomi() {
         return komi;
     }
@@ -72,8 +58,11 @@ public class PlateauJeu {
         return pierresBlanchesCapturees;
     }
 
+    public int getNombrePierresdAvance() {
+        return nombrePierresdAvance;
+    }
+
     //Setters
-    
     public void setKomi(int komi) {
         this.komi = komi;
     }
@@ -90,10 +79,6 @@ public class PlateauJeu {
         this.cote = cote;
     }
 
-    public void setHandicap(boolean handicap) {
-        this.handicap = handicap;
-    }
-
     public void setPierresNoiresCapturees(int pierresNoiresCapturees) {
         this.pierresNoiresCapturees = pierresNoiresCapturees;
     }
@@ -102,91 +87,279 @@ public class PlateauJeu {
         this.pierresBlanchesCapturees = pierresBlanchesCapturees;
     }
 
+    public void setNombrePierresdAvance(int nombrePierresdAvance) {
+        this.nombrePierresdAvance = nombrePierresdAvance;
+    }
+
     //Méthodes
-
-
-/** ajout d'une pierre dans une liste
- * 
- * @param p 
- */
-
-    public void ajouterPierre(Pierre p) {
-        this.pierres.add(p);
-    }
-
-    /**Verification si une position est innocupée
-     * 
+    /**
+     * Une pierre peut être posée si sa position est bien dans le plateau et est inoccupée, et si cela ne provoque pas de suicide ni de ko
+     *
      * @param p
-     * @return 
      */
-    public boolean caseLibre (Point2D p) {
-    }
-        boolean test = true ;
-        
-       for (int i=0; (i<=this.pierres.size()); i++) {
+    public void poserPierre(Point2D p, String c) {
+        if (this.estDansLePlateau(p) && this.caseEstLibre(p)) {
+            // Si la case est bien dans le plateau et libre, on pose la pierre et on met à jour la liste de ses voisins et ses libertés
+            casesAutourDe(p);
             
-            if (p.comparePoint(this.pierres.get(i).getPosition())){
+            // On regarde si la pose de la pierre ne génère pas de suicide
+            if (this.verifierNonSuicide(p) == false) {
+                retirerPierre(p);
+            }
+            // On passe ensuite à une éventuelle phase de capture
+            capturerAutourDe(p);  
+        }
+    }
 
-                test = false;
+    /**
+     * Verifier si une position est innocupée
+     *
+     * @param p
+     * @return
+     */
+    public boolean caseEstLibre(Point2D p) {
+        if (Cases[p.getX()][p.getY()].getCouleur() != "Vide") {
+            System.out.println("Case déjà occupée ! ");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * vérifie si une position est à l'intérieur du plateau
+     * @param p
+     *
+     * @return
+     */
+    public boolean estDansLePlateau(Point2D p) {
+        if ((p.getX() < 0) || (p.getX() > this.cote) || (p.getY() < 0) || (p.getY() > this.cote)) {
+            System.out.println("La position demandée est hors plateau !");
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    /**
+     * Détermine le nombre de libertés d'une pierre qui vient d'être posée et la
+     * liste de ses voisins de même couleur
+     *
+     * @param p
+     */
+    public void casesAutourDe(Point2D p) {
+
+        int x = p.getX();
+        int y = p.getY();
+        Point2D pos = new Point2D(x + 1, y);
+        this.caseACote(p, pos);
+
+        pos.setX(x - 1);
+        this.caseACote(p, pos);
+
+        pos.setX(x);
+        pos.setY(y + 1);
+        this.caseACote(p, pos);
+
+        pos.setY(y - 1);
+        this.caseACote(p, pos);
+    }
+
+    /**
+     * Examine une case voisine d'une pierre qui vient d'être posée. En fonction
+     * de la nature de la case voisin on modifie les libertés et les voisins de
+     * la pierre étudiées et idem pour cette case voisine
+     *
+     * @param p
+     * @param pos
+     */
+    public void caseACote(Point2D p, Point2D pos) {
+        int x = p.getX();
+        int y = p.getY();
+        int a = pos.getX();
+        int b = pos.getY();
+        // On teste si la case voisine est bien dans le plataeu
+        if (estDansLePlateau(pos)) {;
+            // Si oui et qu'elle est libre la pierre posée à une liberté
+            if (caseEstLibre(pos)) {
+                this.Cases[x][y].setLibertes(1);
+            } else {
+                // que la pierre voisine soit de même couleur ou non on lui retire une liberté
+                this.Cases[a][b].setLibertes(-1);
+                // sinon si elle contient une pierre de même couleur 
+                if (Cases[a][b].getCouleur() == this.Cases[x][y].getCouleur()) {
+                    // on rajoute cette case voisine parmi les voisins de la case étudiée
+                    this.Cases[x][y].setVoisins(this.Cases[a][b]);
+                    // on rajoute la case étudiée parmi les voisins de la case voisine
+                    this.Cases[a][b].setVoisins(this.Cases[x][y]);
+                }
+                else { 
+                    // on rajoute cette case voisine parmi les voisins méchants de la case étudiée
+                    this.Cases[x][y].setVoisinsMechants(this.Cases[a][b]);
+                    // on rajoute la case étudiée parmi les voisins méchants de la case voisine
+                    this.Cases[a][b].setVoisinsMechants(this.Cases[x][y]);
+                }
+                
+            }
+
+        }
+    }
+
+
+    /* verifier que la pose d'une pierre n'entraîne pas de suicide
+     * 
+     */
+    public boolean verifierNonSuicide(Point2D p) {
+        boolean test;
+        // si la pierre a des libertés elle est en vie
+        if (Cases[p.getX()][p.getY()].getLibertes() > 0) {
+            return true;
+        } else {
+            // si la case n'a pas de libertés et pas de voisins de même couleur la pierre est morte
+            if (Cases[p.getX()][p.getY()].getVoisins().isEmpty()) {
+                return false;
+            } // si la case a des voisins de même couleur elle fait partie d'un groupe.  
+            // On regarde si ce groupe a des libertés car la pierre étudiée n'en a pas. 
+            else {
+                ArrayList<Case> voisinsVerifies = new ArrayList<Case>();
+                voisinsVerifies.add(Cases[p.getX()][p.getY()]);
+                test = verifierNonSuicideVoisin(p, voisinsVerifies);
+                // Si suicide message d'erreur
+                if (test == false) {
+                    System.out.println("Impossible de poser la pièce à cet endroit car il s'agit d'un suicide");
+                }
+                return test;
+            }
+
+        }
+    }
+
+    /**
+     * Fonction récursive permettant de vérifier si le groupe de la pierre
+     * étudiée possède une liberté.
+     *
+     * @param p
+     * @param voisinsVerifies
+     * @return
+     */
+    public boolean verifierNonSuicideVoisin(Point2D p, ArrayList<Case> voisinsVerifies) {
+        boolean test = false;
+// On parcourt la liste des voisins de la pierre étudiée
+        for (Case voisin : Cases[p.getX()][p.getY()].getVoisins()) {
+
+            // on vérifie que la pierre n'a pas déjà été étudiée pour éviter de boucler indéfiniment
+            if (voisinsVerifies.contains(voisin) == false) {
+                // Si ce n'est pas le cas on l'ajoute dans les voisins étudiées
+                voisinsVerifies.add(voisin);
+                // Puis on regarde si elle  possède des libertés. Si oui pas besoin de tester tous les voisins on peut sortir de la boucle. 
+                if (voisin.getLibertes() > 0) {
+                    return true;
+                } // Si elle n'en a pas on regarde si elle-même a des voisins ayant des libertés
+                else {
+                    // Le caractère récursif de la fonction fait qu'on va tester des pierres du groupe tant qu'on ne trouvera pas de liberté 
+                    test = verifierNonSuicideVoisin(voisin.getPosition(), voisinsVerifies);
+                }
+            }
+            // Si on trouve un voisin avec des libertés pas besoin de tester tous les autres on peut sortir de la boucle.
+            if (test) {
+                break;
             }
         }
         return test;
     }
 
-
     /**
-     * vérifie si une position est à l'intérieur du plateau
+     * Pour retirer une Pierre il faut rajouter une liberté à ses voisins méchants et supprimer sa place dans la liste des voisins méchants, et
+     * ré-initialiser la case
+     *
      * @param p
-     * @return 
      */
-    public boolean estDansLePlateau (Point2D p) {
-        return (p.getX()>=0)&&(p.getX()<=this.cote)&&(p.getY()>=0)&&(p.getY()<=this.cote);
+    public void retirerPierre(Point2D p) {
+        for (Case voisin : Cases[p.getX()][p.getY()].getVoisins()) {
+            voisin.setLibertes(1);
+            enleveMechant(voisin, p);
+        };
+        Cases[p.getX()][p.getY()] = new Case(p);
     }
-    /**
-     * Vérifie les cases libres autour d'une position
-     * @param p
-     * @return 
-     */
+    
+    public void enleveMechant(Case voisin, Point2D p) {
+        Case mechantVoisin = new Case(Cases[p.getX()][p.getY()]);
+        voisin.getVoisinsMechants().remove(mechantVoisin);
+    }
 
-    public LinkedList<Point2D> caseLibreAutourDe(Point2D p) {
-        LinkedList<Point2D> list = new LinkedList();
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-
-                if ((i != 0) && (j != 0)) {
-                    Point2D p1 = new Point2D(p.getX() + i, p.getY() + j);
-                    if (this.caseLibre(p1)) {
-                        list.add(p1);
-                    }
-
-                if((i!=0)&&(j!=0)&&(i!=j)){
-                Point2D p1 = new Point2D(p.getX()+i,p.getY()+j);
-                if ((this.caseLibre(p1))&&(this.estDansLePlateau(p1))) {
-                    list.add(p1);
-                }
-          
+    
+    public void capturerAutourDe(Point2D p) {
+        for (Case voisin : Cases[p.getX()][p.getY()].getVoisinsMechants()) {
+            // On vérifie que le voisin méchant n'est pas déjà été supprimé
+            if ((voisin.getCouleur() != "vide") && (verifierNonCapture(voisin.getPosition()) == false)) {
+            
+            System.out.println("Capture du groupe contenant la pièce " + voisin.getCouleur() + "en position ("+ voisin.getPosition().getX() + ","+ voisin.getPosition().getY() + ")");
+                
             }
         }
-
-
-                }
+    }
+    
+    /* verifier que la pose d'une pierre n'entraîne pas de suicide
+     * 
+     */
+    public boolean verifierNonCapture(Point2D p) {
+        boolean test;
+        // si la pierre a des libertés elle est en vie
+        if (Cases[p.getX()][p.getY()].getLibertes() > 0) {
+            return true;
+        } else {
+            // si la case n'a pas de libertés et pas de voisins de même couleur la pierre est morte
+            if (Cases[p.getX()][p.getY()].getVoisins().isEmpty()) {
+                return false;
+            } // si la case a des voisins de même couleur elle fait partie d'un groupe.  
+            // On regarde si ce groupe a des libertés car la pierre étudiée n'en a pas. 
+            else {
+                ArrayList<Case> voisinsVerifies = new ArrayList<Case>();
+                voisinsVerifies.add(Cases[p.getX()][p.getY()]);
+                test = verifierNonCaptureVoisin(p, voisinsVerifies);
+                return test;
             }
 
         }
-        return list;
-
     }
 
+    public boolean verifierNonCaptureVoisin(Point2D p, ArrayList<Case> voisinsVerifies) {
+        boolean test = false;
+// On parcourt la liste des voisins de la pierre étudiée
+        for (Case voisin : Cases[p.getX()][p.getY()].getVoisins()) {
 
-    public checkSuicide() {
+            // on vérifie que la pierre n'a pas déjà été étudiée pour éviter de boucler indéfiniment
+            if (voisinsVerifies.contains(voisin) == false) {
+                // Si ce n'est pas le cas on l'ajoute dans les voisins étudiées
+                voisinsVerifies.add(voisin);
+                // Puis on regarde si elle  possède des libertés. Si oui pas besoin de tester tous les voisins on peut sortir de la boucle. 
+                if (voisin.getLibertes() > 0) {
+                    return true;
+                } // Si elle n'en a pas on regarde si elle-même a des voisins ayant des libertés
+                else {
+                    // Le caractère récursif de la fonction fait qu'on va tester des pierres du groupe tant qu'on ne trouvera pas de liberté 
+                    test = verifierNonCaptureVoisin(voisin.getPosition(), voisinsVerifies);
+                }
+            }
+            // Si on trouve un voisin avec des libertés pas besoin de tester tous les autres on peut sortir de la boucle.
+            if (test) {
+                break;
+            }
+        }
+        // On retire les pierres si elles sont capturées
+        if (test == false) {
+            for (Case voisin2 : voisinsVerifies) {
+                retirerPierre(voisin2.getPosition());
+            }           
+        }
+        return test;
     }
-
-
 }
-    /** 
-     * Termine la partie
-     */
 
+    /**
+     * Termine la partie
+     *//*
     public void finPartie() {
         if (this.nombreToursPasses == 2) {
             System.out.println("Partie terminée !");
@@ -194,46 +367,30 @@ public class PlateauJeu {
         }
     }
 
-
-    public void capturerPierre(Pierre pierre) {
-        LinkedList<Pierre> listePierre = new LinkedList<>();
-        String couleur = pierre.getCouleur();
-        Point2D position = pierre.getPosition();
-        
-    }
-    public void recherchePierre (Point2D positionPrec){
-        if ((caseLibreAutourDe(pierre.getPosition())).isEmpty()){
-            for(int k=-1;k<=1;k+=2){
-                
-            }
-                
-        }
-    }
-
     /**
      * Définit le tour de jeu
-     * @param j 
+     *
+     * @param j
      */
-       public void jouer(Joueur j){
+    /*public void jouer(Joueur j) {
         Scanner console = new Scanner(System.in);
         System.out.println("Voulez-vous placer une pierre ?");
         String reponse = console.nextLine();
         System.out.println(reponse);
-        
-        if (reponse=="oui") {
+
+        if (reponse == "oui") {
             Scanner console2 = new Scanner(System.in);
             System.out.println("Quelle est l'abscisse de la pierre ?");
             int abs = console.nextInt();
             System.out.println("Quelle est l'ordonnée de la pierre ?");
             int ord = console.nextInt();
-            
-            Point2D p = new Point2D(abs,ord);
-            
-            while()
-            
-        }
-            j.placerPierre(null);
-        }
-    
 
+            Point2D p = new Point2D(abs, ord);
+
+            while () {
+            }
+        }
+        j.placerPierre(null);
+    }
 }
+*/
