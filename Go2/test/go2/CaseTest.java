@@ -6,7 +6,7 @@
 // Julien
 package go2;
 
-//MERWANE okok
+//MERWANE
 
 import java.util.ArrayList;
 import org.junit.After;
