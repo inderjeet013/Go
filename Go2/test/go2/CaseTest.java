@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-// Julien ljljl
+
 package go2;
 
-//MERWANE
+
 
 import java.util.ArrayList;
 import org.junit.After;
@@ -47,12 +47,12 @@ public class CaseTest {
     @Test
     public void testGetCouleur() {
         System.out.println("getCouleur");
-        Case instance = null;
-        String expResult = "";
+        Point2D point = new Point2D(1,2); 
+        Case instance = new Case(point);
+        String expResult = "vide";
         String result = instance.getCouleur();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -61,8 +61,9 @@ public class CaseTest {
     @Test
     public void testGetPosition() {
         System.out.println("getPosition");
-        Case instance = null;
-        Point2D expResult = null;
+        Point2D point = new Point2D(1,2); 
+        Case instance = new Case(point);
+        Point2D expResult = point;
         Point2D result = instance.getPosition();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -103,8 +104,9 @@ public class CaseTest {
     @Test
     public void testGetVoisinsMechants() {
         System.out.println("getVoisinsMechants");
-        Case instance = null;
-        ArrayList<Case> expResult = null;
+        Point2D p = new Point2D(1, 2);
+        Case instance = new Case(p);
+        ArrayList<Case> expResult = new ArrayList<Case>();
         ArrayList<Case> result = instance.getVoisinsMechants();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -117,11 +119,10 @@ public class CaseTest {
     @Test
     public void testSetCouleur() {
         System.out.println("setCouleur");
-        String couleur = "";
-        Case instance = null;
-        instance.setCouleur(couleur);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Point2D point = new Point2D(1,2); 
+        Case instance = new Case(point);
+        instance.setCouleur("noir");
+        assertEquals("noir", instance.getCouleur());
     }
 
     /**
@@ -156,11 +157,17 @@ public class CaseTest {
     @Test
     public void testSetVoisins_ArrayList() {
         System.out.println("setVoisins");
-        ArrayList<Case> voisins = null;
-        Case instance = null;
-        instance.setVoisins(voisins);
+        int x = 1;
+        int y = 2;
+        Point2D point = new Point2D(x, y); 
+        
+        ArrayList<Case> list = new ArrayList<Case>();
+        Case instance = new Case (point);
+        instance.setVoisins(list);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(list, instance.getVoisins());
+        list.add(instance);
+        assertEquals(list, instance.getVoisins());
     }
 
     /**

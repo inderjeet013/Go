@@ -10,6 +10,8 @@ import java.util.ArrayList;
  *
  * @author jtaillan
  */
+
+
 public class Case {
      private String couleur;
      private Point2D position;

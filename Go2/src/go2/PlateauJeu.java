@@ -20,7 +20,7 @@ public class PlateauJeu {
     private int pierresNoiresCapturees;
     private int pierresBlanchesCapturees;
     private int nombreToursPasses;
-    private Case[][] Cases = new Case[cote - 1][cote - 1];
+    private Case Cases[][];
 
     public PlateauJeu(int k, int c, int n, int pNc, int pBc) {
         this.komi = k;
@@ -29,8 +29,14 @@ public class PlateauJeu {
         this.pierresNoiresCapturees = pNc;
         this.pierresBlanchesCapturees = pBc;
         this.nombreToursPasses = 0;
-        this.Cases = new Case[cote - 1][cote - 1];
-
+        this.Cases = new Case[cote][cote];
+        int i; int j; 
+        for (i=0; i<c; i++) {
+            for (j=0; j<c; j++) {
+                Point2D p = new Point2D(i, j);
+                this.Cases[i][j] = new Case(p);
+            }
+        }
     }
 
     //getters
@@ -118,11 +124,12 @@ public class PlateauJeu {
      * @return
      */
     public boolean caseEstLibre(Point2D p) {
-        if (Cases[p.getX()][p.getY()].getCouleur() != "Vide") {
+        if (this.Cases[p.getX()][p.getY()].getCouleur().equals("vide")) {
+            return true;
+        } 
+        else {
             System.out.println("Case déjà occupée ! ");
             return false;
-        } else {
-            return true;
         }
     }
 
@@ -133,7 +140,7 @@ public class PlateauJeu {
      * @return
      */
     public boolean estDansLePlateau(Point2D p) {
-        if ((p.getX() < 0) || (p.getX() > this.cote) || (p.getY() < 0) || (p.getY() > this.cote)) {
+        if ((p.getX() <= 0) || (p.getX() >= this.cote) || (p.getY() <= 0) || (p.getY() >= this.cote)) {
             System.out.println("La position demandée est hors plateau !");
             return false;
         } else {
@@ -143,8 +150,8 @@ public class PlateauJeu {
     }
 
     /**
-     * Détermine le nombre de libertés d'une pierre qui vient d'être posée et la
-     * liste de ses voisins de même couleur
+     * Détermine le nombre de libertés d'une pierre qui vient d'être posée,la
+     * liste de ses voisins de même couleur et la liste de ses voisins de couleur différente
      *
      * @param p
      */
@@ -179,21 +186,23 @@ public class PlateauJeu {
         int y = p.getY();
         int a = pos.getX();
         int b = pos.getY();
-        // On teste si la case voisine est bien dans le plataeu
+        // On teste si la case voisine est bien dans le plateau
         if (estDansLePlateau(pos)) {;
             // Si oui et qu'elle est libre la pierre posée à une liberté
             if (caseEstLibre(pos)) {
                 this.Cases[x][y].setLibertes(1);
             } else {
+                // si la case voisine est occupée, 
                 // que la pierre voisine soit de même couleur ou non on lui retire une liberté
                 this.Cases[a][b].setLibertes(-1);
-                // sinon si elle contient une pierre de même couleur 
+                // si elle contient une pierre de même couleur 
                 if (Cases[a][b].getCouleur() == this.Cases[x][y].getCouleur()) {
                     // on rajoute cette case voisine parmi les voisins de la case étudiée
                     this.Cases[x][y].setVoisins(this.Cases[a][b]);
                     // on rajoute la case étudiée parmi les voisins de la case voisine
                     this.Cases[a][b].setVoisins(this.Cases[x][y]);
                 }
+                //si la case voisine contient une pierre de l'autre couleur 
                 else { 
                     // on rajoute cette case voisine parmi les voisins méchants de la case étudiée
                     this.Cases[x][y].setVoisinsMechants(this.Cases[a][b]);
@@ -283,6 +292,9 @@ public class PlateauJeu {
         Cases[p.getX()][p.getY()] = new Case(p);
     }
     
+    /*
+     * 
+     */
     public void enleveMechant(Case voisin, Point2D p) {
         Case mechantVoisin = new Case(Cases[p.getX()][p.getY()]);
         voisin.getVoisinsMechants().remove(mechantVoisin);

@@ -43,12 +43,14 @@ public class Point2DTest {
     @Test
     public void testGetX() {
         System.out.println("getX");
-        Point2D instance = null;
-        int expResult = 0;
+        int x = 1;
+        int y = 1;
+        Point2D instance = new Point2D(x,y);
+        int expResult = 1;
         int result = instance.getX();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -57,12 +59,14 @@ public class Point2DTest {
     @Test
     public void testGetY() {
         System.out.println("getY");
-        Point2D instance = null;
-        int expResult = 0;
+        int x = 1;
+        int y = 1;
+        Point2D instance = new Point2D(x,y);
+        int expResult = 1;
         int result = instance.getY();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
 
     /**
@@ -71,51 +75,13 @@ public class Point2DTest {
     @Test
     public void testSetX() {
         System.out.println("setX");
-        int x = 0;
-        Point2D instance = null;
+        int x = 1;
+        int y = 1;
+        Point2D instance = new Point2D(x,y);
         instance.setX(x);
+        assertEquals(1, instance.getX());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setY method, of class Point2D.
-     */
-    @Test
-    public void testSetY() {
-        System.out.println("setY");
-        int y = 0;
-        Point2D instance = null;
-        instance.setY(y);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of affichePosition method, of class Point2D.
-     */
-    @Test
-    public void testAffichePosition() {
-        System.out.println("affichePosition");
-        Point2D instance = null;
-        instance.affichePosition();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of comparePoint method, of class Point2D.
-     */
-    @Test
-    public void testComparePoint() {
-        System.out.println("comparePoint");
-        Point2D p = null;
-        Point2D instance = null;
-        boolean expResult = false;
-        boolean result = instance.comparePoint(p);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        
     }
     
 }
