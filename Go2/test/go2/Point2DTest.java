@@ -18,6 +18,11 @@ import static org.junit.Assert.*;
  */
 public class Point2DTest {
     
+    private int x = 1;
+    private int y = 2;
+    private Point2D instance = new Point2D(x,y);
+
+    
     public Point2DTest() {
     }
     
@@ -31,6 +36,8 @@ public class Point2DTest {
     
     @Before
     public void setUp() {
+        x = 1;
+        y = 1;
     }
     
     @After
@@ -43,9 +50,6 @@ public class Point2DTest {
     @Test
     public void testGetX() {
         System.out.println("getX");
-        int x = 1;
-        int y = 1;
-        Point2D instance = new Point2D(x,y);
         int expResult = 1;
         int result = instance.getX();
         assertEquals(expResult, result);
@@ -59,10 +63,7 @@ public class Point2DTest {
     @Test
     public void testGetY() {
         System.out.println("getY");
-        int x = 1;
-        int y = 1;
-        Point2D instance = new Point2D(x,y);
-        int expResult = 1;
+        int expResult = 2;
         int result = instance.getY();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
@@ -75,10 +76,7 @@ public class Point2DTest {
     @Test
     public void testSetX() {
         System.out.println("setX");
-        int x = 1;
-        int y = 1;
-        Point2D instance = new Point2D(x,y);
-        instance.setX(x);
+        instance.setX(1);
         assertEquals(1, instance.getX());
         // TODO review the generated test code and remove the default call to fail.
         

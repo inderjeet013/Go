@@ -72,6 +72,7 @@ public class Case {
     public void setLibertes(int l) {
         this.libertes = this.libertes + l;
     }
+    
 
     public void setVoisins(ArrayList<Case> voisins) {
         this.voisins = voisins;
