@@ -12,12 +12,15 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
  * @author Merwane
  */
 public class PlateauJeuTest {
+    
+    private PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
     
     public PlateauJeuTest() {
     }
@@ -32,7 +35,25 @@ public class PlateauJeuTest {
     
     @Before
     public void setUp() {
+        instance.setCote(5);
+        int i; int j; 
+        for (i=0; i<5; i++) {
+            for (j=0; j<5; j++) {
+                Point2D p = new Point2D(i, j);
+                instance.getCases()[i][j] = new Case(p);
+            }
+        }
+        // On initialise la case d'étude
+        instance.getCases()[4][3].setCouleur("noir");
+        
+        // On initialise les voisins gentils
+        instance.getCases()[3][3].setCouleur("noir");
+
+        // On initialise les voisins mechants
+        instance.getCases()[4][4].setCouleur("blanc");
+        instance.getCases()[4][2].setCouleur("blanc");        
     }
+    
     
     @After
     public void tearDown() {
@@ -41,11 +62,11 @@ public class PlateauJeuTest {
   
     /**
      * Test of getCases method, of class PlateauJeu.
-     */
+     */ 
+    @Ignore
     @Test
     public void testGetCases() {
         System.out.println("getCases");
-        PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
         Case[][] expResult = new Case[4][4];
         Case[][] result = instance.getCases();
         assertArrayEquals(expResult, result);
@@ -58,12 +79,9 @@ public class PlateauJeuTest {
     @Test
     public void testGetCote() {
         System.out.println("getCote");
-        PlateauJeu instance = null;
-        int expResult = 0;
+        int expResult = 5;
         int result = instance.getCote();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 
@@ -71,12 +89,11 @@ public class PlateauJeuTest {
     /**
      * Test of setCases method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testSetCases() {
         System.out.println("setCases");
-        Case[][] Cases = null;
-        PlateauJeu instance = null;
-        instance.setCases(Cases);
+        Case Test[][];   
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -87,16 +104,15 @@ public class PlateauJeuTest {
     @Test
     public void testSetCote() {
         System.out.println("setCote");
-        int cote = 0;
-        PlateauJeu instance = null;
-        instance.setCote(cote);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        instance.setCote(456);
+        assertEquals(instance.getCote(), 456);
+           
     }
 
     /**
      * Test of poserPierre method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testPoserPierre() {
         System.out.println("poserPierre");
@@ -114,14 +130,10 @@ public class PlateauJeuTest {
     @Test
     public void testCaseEstLibre() {
         System.out.println("caseEstLibre");
-        Point2D p = new Point2D(2, 2);
-        Point2D p1 = new Point2D(3, 2);
-        PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
-        instance.getCases()[3][2].setCouleur("noir");
-        boolean result = instance.caseEstLibre(p);
-        boolean result1 = instance.caseEstLibre(p1); 
-        assertTrue(result);
-        assertFalse(result1);
+        Point2D p10 = new Point2D(1, 1);
+        Point2D p11 = new Point2D(4, 3);
+        assertTrue(instance.caseEstLibre(p10));
+        assertFalse(instance.caseEstLibre(p11));
     }
 
     /**
@@ -130,19 +142,19 @@ public class PlateauJeuTest {
     @Test
     public void testEstDansLePlateau() {
         System.out.println("estDansLePlateau");
-        Point2D p1 = new Point2D(10,3);
-        Point2D p2 = new Point2D(5,5);
-        Point2D p3 = new Point2D(2,2);
+        Point2D p10 = new Point2D(10,3);
+        Point2D p11 = new Point2D(5,5);
+        Point2D p12 = new Point2D(2,2);
 
         PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
         //boolean expResult = false;
-        boolean result = instance.estDansLePlateau(p1);
+        boolean result = instance.estDansLePlateau(p10);
         assertFalse(result);
         
-        boolean result1 = instance.estDansLePlateau(p2);
+        boolean result1 = instance.estDansLePlateau(p11);
         assertFalse(result1);
 
-        boolean result2 = instance.estDansLePlateau(p3);
+        boolean result2 = instance.estDansLePlateau(p12);
         assertTrue(result2);
     }
        
@@ -150,21 +162,16 @@ public class PlateauJeuTest {
     /**
      * Test of casesAutourDe method, of class PlateauJeu.
      */
+   
     @Test
     public void testCasesAutourDe() {
         System.out.println("casesAutourDe");
-         Point2D p = new Point2D(4,3);
          
-        PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
-        instance.getCases()[4][3].setCouleur("noir");
-        instance.getCases()[3][3].setCouleur("noir");
         instance.getCases()[3][3].setLibertes(+1);
-        instance.getCases()[4][4].setCouleur("blanc");
         instance.getCases()[4][4].setLibertes(+1);
-        instance.getCases()[4][2].setCouleur("blanc");
         instance.getCases()[4][2].setLibertes(+1);
         
-        instance.casesAutourDe(p);
+        instance.casesAutourDe(instance.getCases()[4][3].getPosition());
        // On vérifie qu'on a bien retirer une liberté à tous les voisins de la pierre posée
         assertEquals(instance.getCases()[3][3].getLibertes(), 0);
         assertEquals(instance.getCases()[4][4].getLibertes(), 0);
@@ -188,43 +195,36 @@ public class PlateauJeuTest {
      */
     @Test
     public void testCaseACote() {
-        System.out.println("caseACote");
-        Point2D p = new Point2D(3,3);
-        Point2D pos = new Point2D(3,4);
-        PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
-        instance.getCases()[3][3].setCouleur("noir");
-        
+        System.out.println("caseACote");       
         // Test dans le cas où la pierre voisine est de couleur différente
-        instance.getCases()[3][4].setCouleur("blanc");
-        instance.getCases()[3][4].setLibertes(+1);
+        instance.getCases()[4][2].setLibertes(+1);
         
-        instance.caseACote(p, pos);
-        assertEquals(instance.getCases()[3][4].getLibertes(), 0);
-        assertTrue(instance.getCases()[3][4].getVoisinsMechants().contains(instance.getCases()[3][3]));
-        assertTrue(instance.getCases()[3][3].getVoisinsMechants().contains(instance.getCases()[3][4]));
+        instance.caseACote(instance.getCases()[4][3].getPosition(), instance.getCases()[4][2].getPosition());
+        assertEquals(instance.getCases()[4][2].getLibertes(), 0);
+        assertTrue(instance.getCases()[4][3].getVoisinsMechants().contains(instance.getCases()[4][2]));
+        assertTrue(instance.getCases()[4][2].getVoisinsMechants().contains(instance.getCases()[4][3]));
         
         //Test dans le cas où la pierre voisine est de même couleur
-        instance.getCases()[3][4].setCouleur("noir");
-        instance.getCases()[3][4].setLibertes(+1);
+        instance.getCases()[3][3].setLibertes(+1);
         
-        instance.caseACote(p, pos);
-        assertEquals(instance.getCases()[3][4].getLibertes(), 0);
-        assertTrue(instance.getCases()[3][4].getVoisins().contains(instance.getCases()[3][3]));
-        assertTrue(instance.getCases()[3][3].getVoisins().contains(instance.getCases()[3][4]));
+        instance.caseACote(instance.getCases()[4][3].getPosition(), instance.getCases()[3][3].getPosition());
+        assertEquals(instance.getCases()[3][3].getLibertes(), 0);
+        assertTrue(instance.getCases()[4][3].getVoisins().contains(instance.getCases()[3][3]));
+        assertTrue(instance.getCases()[3][3].getVoisins().contains(instance.getCases()[4][3]));
        
     }
 
     /**
      * Test of verifierNonSuicide method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testVerifierNonSuicide() {
         System.out.println("verifierNonSuicide");
-        Point2D p = null;
-        PlateauJeu instance = null;
+        
         boolean expResult = false;
-        boolean result = instance.verifierNonSuicide(p);
-        assertEquals(expResult, result);
+      //  boolean result = instance.verifierNonSuicide(p);
+       // assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -232,6 +232,7 @@ public class PlateauJeuTest {
     /**
      * Test of verifierNonSuicideVoisin method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testVerifierNonSuicideVoisin() {
         System.out.println("verifierNonSuicideVoisin");
@@ -254,23 +255,23 @@ public class PlateauJeuTest {
         Point2D p = new Point2D(4,3);
         Point2D p1 = new Point2D(1,1);
          
-        PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
-        instance.getCases()[4][3].setCouleur("noir");
         instance.getCases()[4][3].setLibertes(1);
-        instance.getCases()[4][3].setVoisins(c);
         
+        // On initialise les voisins mechants
+        instance.getCases()[4][3].setVoisinsMechants(instance.getCases()[3][3]);
         
-        instance.getCases()[3][3].setCouleur("noir");
-        instance.getCases()[4][3].setVoisins(instance.getCases()[3][3]);
-        instance.getCases()[4][4].setCouleur("blanc");
-        instance.getCases()[4][3].setVoisins(instance.getCases()[4][4]);
-        instance.getCases()[4][2].setCouleur("blanc");
-        instance.getCases()[4][3].setVoisins(instance.getCases()[4][2]);
+        // On initialise les voisins mechants
+        instance.getCases()[4][3].setVoisinsMechants(instance.getCases()[4][4]);
+
+        // On initilaise les voisins méchants      
+        instance.getCases()[4][3].setVoisinsMechants(instance.getCases()[4][2]);
+
+        
         instance.retirerPierre(p);
-        // on teste qu'on a bien rajouté une liberté aux voisins de la pierre retirée
-        /*assertEquals(instance.getCases()[3][3].getLibertes(), 1);
+        
+        // on teste qu'on a bien rajouté une liberté aux voisins méchants de la pierre retirée
         assertEquals(instance.getCases()[4][4].getLibertes(), 1);
-        assertEquals(instance.getCases()[4][2].getLibertes(), 1);*/
+        assertEquals(instance.getCases()[4][2].getLibertes(), 1);
         
         // on teste qu'on a bien retiré la pierre des listes de voisins méchants
         assertFalse(instance.getCases()[4][4].getVoisinsMechants().contains(instance.getCases()[4][3]));
@@ -286,26 +287,9 @@ public class PlateauJeuTest {
     }
 
     /**
-     * Test of enleveMechant method, of class PlateauJeu.
-     */
-   /* @Test
-    public void testEnleveMechant() {
-        System.out.println("enleveMechant");
-        Point2D p = new Point2D(3,3);
-        Point2D p1 = new Point2D(3,4);
-        Case mechant = new Case(p);
-        PlateauJeu instance = new PlateauJeu(0,5,0,0,0);
-        instance.getCases()[3][3] = new Case(mechant);
-        instance.getCases()[3][4].setVoisinsMechants(mechant);
-        
-        assertTrue(instance.getCases()[3][4].getVoisinsMechants().contains(mechant));
-        instance.getCases()[3][4].enleverVoisinMechant(mechant);
-        assertFalse(instance.getCases()[3][4].getVoisinsMechants().contains(mechant));
-    }*/
-
-    /**
      * Test of capturerAutourDe method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testCapturerAutourDe() {
         System.out.println("capturerAutourDe");
@@ -319,6 +303,7 @@ public class PlateauJeuTest {
     /**
      * Test of verifierNonCapture method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testVerifierNonCapture() {
         System.out.println("verifierNonCapture");
@@ -334,6 +319,7 @@ public class PlateauJeuTest {
     /**
      * Test of verifierNonCaptureVoisin method, of class PlateauJeu.
      */
+    @Ignore
     @Test
     public void testVerifierNonCaptureVoisin() {
         System.out.println("verifierNonCaptureVoisin");
