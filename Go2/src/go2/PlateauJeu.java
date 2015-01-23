@@ -280,25 +280,27 @@ public class PlateauJeu {
 
     /**
      * Pour retirer une Pierre il faut rajouter une liberté à ses voisins méchants et supprimer sa place dans la liste des voisins méchants, et
-     * ré-initialiser la case
+     * ré-initialiser la case/
+     * Pas besoin de rajouter une liberté à ses voisins gentils car ils sont supprimés aussi. 
      *
      * @param p
      */
     public void retirerPierre(Point2D p) {
         for (Case voisin : Cases[p.getX()][p.getY()].getVoisins()) {
-            voisin.setLibertes(1);
-            this.enleveMechant(voisin, p);
+            voisin.setLibertes(1); // retire une liberté au voisin
+            voisin.enleverVoisinMechant(Cases[p.getX()][p.getY()]); // retire la pierre en position p de la liste des voisins méchants de voisin
         };
         Cases[p.getX()][p.getY()] = new Case(p);
     }
     
     /*
-     * 
+     * retire la pierre en position p de la liste des voisins méchants de voisin
      */
-    public void enleveMechant(Case voisin, Point2D p) {
-        Case mechantVoisin = new Case(Cases[p.getX()][p.getY()]);
-        voisin.getVoisinsMechants().remove(mechantVoisin);
-    }
+   /* public void enleveMechant(Case voisin, Case mechant) {
+       // Case mechantVoisin = new Case(this.Cases[p.getX()][p.getY()]);
+       /*voisin.enleveVoisinMechant(c);*/
+      // voisin.enleverVoisinMechant(mechant);
+    //}
 
     
     public void capturerAutourDe(Point2D p) {

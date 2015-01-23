@@ -209,4 +209,17 @@ public class CaseTest {
         fail("The test case is a prototype.");
     }
     
+     @Test
+    public void testEnleveMechant() {
+        System.out.println("enleveMechant");
+        Point2D p1 = new Point2D(3,3);
+        Point2D p2 = new Point2D(3,4);
+        Case mechant = new Case(p1);
+        Case voisin = new Case(p2);
+        voisin.setVoisinsMechants(mechant);
+        assertTrue(voisin.getVoisinsMechants().contains(mechant));
+        voisin.enleverVoisinMechant(mechant);
+        assertFalse(voisin.getVoisinsMechants().contains(mechant));
+    }
+    
 }
